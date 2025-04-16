@@ -58,6 +58,7 @@ set(SRC_FILES
     src/matrix_processing.c
     src/random_vec.c
     src/measure_performance.c
+    src/store_performance.c
 )
 
 # Aggiungi le directory di output per oggetti e binari

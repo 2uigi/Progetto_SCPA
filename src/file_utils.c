@@ -25,7 +25,6 @@ const char matrice_path[] = "matrici";    // directory con i .mtx
 void process_files(const char *matrice_path) {
     char **file_list;
     int file_count;
-
     /*
     if (list_mtx_files(matrice_path, &file_list, &file_count) != 0) {
         fprintf(stderr, "Errore: %s\n", strerror(errno));
@@ -48,8 +47,7 @@ void process_files(const char *matrice_path) {
     }
 
     */
-
-    process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/lung2.mtx");
+    process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/cage4.mtx");
 
     free(file_list);
 }
@@ -65,6 +63,22 @@ void print_curr_dir(){
         exit(1);
     }
 
+}
+
+char* get_filename_from_path(const char* path) {
+    if (!path) return NULL;
+
+    const char* last_slash = strrchr(path, '/');
+    const char* filename = last_slash ? last_slash + 1 : path;
+
+    char* result = malloc(strlen(filename) + 1);
+    if (!result) {
+        perror("malloc fallita");
+        return NULL;
+    }
+
+    strcpy(result, filename);
+    return result;
 }
 
 int list_mtx_files(const char *directory, char ***file_list, int *file_count) {

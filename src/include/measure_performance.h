@@ -9,8 +9,6 @@ double measure_spmv_csr_parallel(const CSRMatrix *csr, double *x, double *y,
 double measure_spmv_csr_serial(const CSRMatrix *A, double *x, double *y,
     int repetitions);    
     
-void report_performance(double avg_time_sec, int NZ);
-
 #endif 
 
 

@@ -9,12 +9,14 @@
 #include "include/ELLPACKMatrix.h"
 #include "include/random_vec.h"
 #include "include/measure_performance.h"
+#include "include/store_performance.h"
 
 
 void process_matrix_file(const char *file_path) {
     FILE *f = fopen(file_path, "r");
     double* x;
     double* y;
+    double avg_time_sec;
 
     if (f == NULL) {
         fprintf(stderr, "Errore nell'aprire il file %s: %s\n", file_path, strerror(errno));
@@ -26,33 +28,37 @@ void process_matrix_file(const char *file_path) {
 
     if (coo == NULL) {
         fprintf(stderr, "Errore nella lettura della matrice da %s\n", file_path);
-        return;
+        exit(EXIT_FAILURE);
     }
 
-    // Stampa la matrice COO prima e dopo ordinamento
-    //print_coo_matrix(coo);
-    //printf("------ sort ------\n");
-    //sort_coo_matrix(coo);
-    //print_coo_matrix(coo);
-
-    // Conversione da COO a CSR
     CSRMatrix *csr = convert_coo_to_csr(coo);
-    //print_csr_matrix(csr);
-    printf("\n-------------------------------------\n");
-    //print_full_matrix_from_csr(csr);
 
     x = generate_random_vector_for_csr(csr->cols);
-    y = (double *)malloc(sizeof(double) * csr->rows);
-    if (!y) {
+    y = (double*)malloc(sizeof(double) * csr->rows);
+    if (y==NULL) {
         fprintf(stderr, "Errore nell'allocazione del vettore y\n");
         exit(EXIT_FAILURE);
     }
-    measure_spmv_csr_serial(csr, x, y, 100);
-
     
-    // Conversione da COO a ELLPACK
-    //ELLPACKMatrix *ellp = convert_coo_to_ellp(coo);
-    //print_ellpack_matrix(ellp);
+    performance_parameters *p_p = (performance_parameters*) malloc(sizeof(performance_parameters*));
+    if(p_p == NULL){
+        fprintf(stderr, "Errore allocazione performance_parameters\n");
+        exit(EXIT_FAILURE);
+    }
+
+    p_p->avg_time_sec = measure_spmv_csr_serial(csr, x, y, 1);
+    p_p->matrix_filename = get_filename_from_path(file_path);
+    p_p->NZ = csr->nnz;
+    p_p->num_threads = 1;
+    p_p->repetitions = 1;
+
+    report_performance_to_csv(p_p);
+
+    measure_spmv_csr_parallel(csr,x, y, 1,20);
+
+    free(p_p);
+    free(x);
+    free(y);
 
     // Libera le risorse
     free(coo);
