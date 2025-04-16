@@ -1,0 +1,15 @@
+CPU INFO
+model name      : Intel(R) Xeon(R) Silver 4210 CPU @ 2.20GHz
+Numero di core visibili: 40
+cpu cores       : 10
+siblings        : 20
+
+0000:9e:00.0 VGA compatible controller: NVIDIA Corporation TU104GL [Quadro RTX 5000] (rev a1)
+0000:9e:00.1 Audio device: NVIDIA Corporation TU104 HD Audio Controller (rev a1)
+0000:9e:00.2 USB controller: NVIDIA Corporation TU104 USB 3.1 Host Controller (rev a1)
+0000:9e:00.3 Serial bus controller: NVIDIA Corporation TU104 USB Type-C UCSI Controller (rev a1)
+
+L1d cache:                            640 KiB (20 instances)
+L1i cache:                            640 KiB (20 instances)
+L2 cache:                             20 MiB (20 instances)
+L3 cache:                             27,5 MiB (2 instances)
