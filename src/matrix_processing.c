@@ -8,7 +8,7 @@
 #include "include/CSRMatrix.h"
 #include "include/ELLPACKMatrix.h"
 #include "include/random_vec.h"
-#include "include/csr_product.h"
+#include "include/measure_performance.h"
 
 
 void process_matrix_file(const char *file_path) {
@@ -37,13 +37,18 @@ void process_matrix_file(const char *file_path) {
 
     // Conversione da COO a CSR
     CSRMatrix *csr = convert_coo_to_csr(coo);
-    print_csr_matrix(csr);
+    //print_csr_matrix(csr);
     printf("\n-------------------------------------\n");
-    print_full_matrix_from_csr(csr);
+    //print_full_matrix_from_csr(csr);
 
     x = generate_random_vector_for_csr(csr->cols);
-    y = csr_matrix_vector_multiply(csr, x, csr->rows); 
-    print_vector(y, csr->rows);
+    y = (double *)malloc(sizeof(double) * csr->rows);
+    if (!y) {
+        fprintf(stderr, "Errore nell'allocazione del vettore y\n");
+        exit(EXIT_FAILURE);
+    }
+    measure_spmv_csr_serial(csr, x, y, 100);
+
     
     // Conversione da COO a ELLPACK
     //ELLPACKMatrix *ellp = convert_coo_to_ellp(coo);

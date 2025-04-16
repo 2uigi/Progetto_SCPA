@@ -49,7 +49,7 @@ void process_files(const char *matrice_path) {
 
     */
 
-    process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici_test/test_array_real_general.mtx");
+    process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/lung2.mtx");
 
     free(file_list);
 }

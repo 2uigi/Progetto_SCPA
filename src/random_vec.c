@@ -32,7 +32,7 @@ double* generate_random_vector_for_csr(int n_cols) {
         x[i] = generate_high_precision_random(); // valore tra 0.0 e 1.0
     }
 
-    printf("\nVettore y: ");
-    print_vector(x, n_cols);
+    //printf("\nVettore y: ");
+    //print_vector(x, n_cols);
     return x;
 }

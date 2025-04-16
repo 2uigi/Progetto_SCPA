@@ -56,8 +56,8 @@ set(SRC_FILES
     src/convert_coo_to_ellp.c
     src/convert_coo_to_ellp_columnwise.c
     src/matrix_processing.c
-    src/csr_product.c
     src/random_vec.c
+    src/measure_performance.c
 )
 
 # Aggiungi le directory di output per oggetti e binari

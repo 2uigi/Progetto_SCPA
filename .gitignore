@@ -1,0 +1,33 @@
+# === Cartelle di progetto da ignorare ===
+build/
+matrici/
+matrici_test/
+
+# === File di input/output e matrici ===
+*.mtx
+
+# === File oggetto e binari compilati ===
+*.o
+*.out
+*.exe
+*.a
+*.so
+*.dll
+
+# === File generati da CMake ===
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# === File di configurazione di VSCode ===
+.vscode/
+
+# === File temporanei dell'editor ===
+*.swp
+*~
+*.log
+*.tmp
+
+# === File specifici troppo grandi (esempio, personalizzabile) ===
+/path/al/file_grande
