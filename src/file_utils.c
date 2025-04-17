@@ -47,9 +47,9 @@ void process_files(const char *matrice_path) {
     }
 
     */
-    process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/cage4.mtx");
+    //process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/cage4.mtx");
 
-    free(file_list);
+    //free(file_list);
 }
 
 

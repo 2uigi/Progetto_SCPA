@@ -59,6 +59,7 @@ set(SRC_FILES
     src/random_vec.c
     src/measure_performance.c
     src/store_performance.c
+    src/rcm_reordering.c
 )
 
 # Aggiungi le directory di output per oggetti e binari
