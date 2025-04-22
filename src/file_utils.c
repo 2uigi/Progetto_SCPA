@@ -7,7 +7,6 @@
 #include "include/COOMatrix.h"
 #include "include/CSRMatrix.h"
 #include "include/ELLPACKMatrix.h"
-#include "include/matrix_processing.h"
 #include <time.h>
 #include <unistd.h>
 #include <math.h>
@@ -15,43 +14,6 @@
 #include <time.h>
 #include <unistd.h>
 #include <math.h>
-
-#ifndef PATH_MAX_LENGTH
-#define PATH_MAX_LENGTH 4096
-#endif
-
-const char matrice_path[] = "matrici";    // directory con i .mtx 
-
-void process_files(const char *matrice_path) {
-    char **file_list;
-    int file_count;
-    /*
-    if (list_mtx_files(matrice_path, &file_list, &file_count) != 0) {
-        fprintf(stderr, "Errore: %s\n", strerror(errno));
-        return;
-    }
-
-    printf("Trovati %d file .mtx:\n", file_count);
-
-    for (int i = 0; i < file_count; i++) {
-        char full_path[PATH_MAX_LENGTH];
-        snprintf(full_path, sizeof(full_path), "%s/%s", matrice_path, file_list[i]);
-
-        printf("- Processando il file: %s\n", full_path);
-
-
-        process_matrix_file(full_path);
-
-
-        free(file_list[i]);
-    }
-
-    */
-    //process_matrix_file("/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/cage4.mtx");
-
-    //free(file_list);
-}
-
 
 void print_curr_dir(){
     char cwd[4096];
