@@ -7,6 +7,7 @@
 #include "include/COOMatrix.h"
 #include <limits.h>
 #include <math.h>
+#include <stdint.h>
 
 void analyze_matrix_structure(const CSRMatrix *csr, const char *matrix_name, const char *report_path) {
     int min_nnz = INT_MAX;
@@ -16,6 +17,7 @@ void analyze_matrix_structure(const CSRMatrix *csr, const char *matrix_name, con
     int rows = csr->rows;
     int cols = csr->cols;
     int nnz_total = csr->row_ptr[rows];
+    uint64_t total_elements = (uint64_t)rows * (uint64_t)cols;
 
     for (int i = 0; i < rows; i++) {
         int nnz = csr->row_ptr[i + 1] - csr->row_ptr[i];
@@ -27,7 +29,7 @@ void analyze_matrix_structure(const CSRMatrix *csr, const char *matrix_name, con
 
     double avg = total_nnz / rows;
     double stddev = sqrt(sum_sq / rows - avg * avg);
-    double density = (double)nnz_total / (rows * cols);
+    double density = (double)nnz_total / (double) total_elements;
 
     FILE *report = fopen(report_path, "a");  // modalità append
     if (!report) {
