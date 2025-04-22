@@ -29,8 +29,8 @@ performance_parameters *create_performance_parameters(const CSRMatrix *csr, cons
     return p;
 }
 
-int main(int argc, char* argv[]) {
-    const char* file_path = "/home/vboxuser/Desktop/SCPA/progetto_SCPA/matrici/cage4.mtx";
+int main(int argc, char* argv[]) { // 
+    const char* file_path = argv[1];
 
     // --- Caricamento matrice in formato COO ---
     FILE *f = fopen(file_path, "r");
@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
 
     // --- Allocazione vettori ---
     double *x = generate_random_vector_for_csr(csr->cols);
+    posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
     double *y = malloc(sizeof(double) * csr->rows);
     if (!y) {
         fprintf(stderr, "Errore nell'allocazione del vettore y\n");
@@ -59,28 +60,27 @@ int main(int argc, char* argv[]) {
     }
 
     // --- Misurazione performance seriale ---
-    double serial_time = measure_spmv_csr_serial(csr, x, y, 1);
-    performance_parameters *p_p = create_performance_parameters(csr, file_path, serial_time, 1, 1);
+    double serial_time = measure_spmv_csr_serial(csr, x, y, 100);
+    performance_parameters *p_p = create_performance_parameters(csr, file_path, serial_time, 1, 100);
     report_performance_to_csv(p_p);
     free(p_p->matrix_filename);  // Solo se strdup
     free(p_p);
-
-    // --- Misurazione performance parallela su CSR originale ---
-    measure_spmv_csr_parallel(csr, x, y, 1, 20);
 
     // --- Reordering RCM ---
     CSRMatrix csr_reordered;
     double *x_reordered = NULL;
 
     apply_rcm_to_csr(csr, x, &csr_reordered, &x_reordered);
+    posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
 
     // Riutilizza y
-    double reordered_time = measure_spmv_csr_parallel(&csr_reordered, x_reordered, y, 10, 4);
+    double reordered_time = measure_spmv_csr_serial(&csr_reordered, x_reordered, y, 100);
+    p_p = create_performance_parameters(csr, file_path, reordered_time, 1, 100);
+    report_performance_to_csv(p_p);
+    free(p_p->matrix_filename);  // Solo se strdup
+    free(p_p);
 
-    // Potresti anche loggare le performance rcm in CSV, es.:
-    // p_p = create_performance_parameters(&csr_reordered, file_path, reordered_time, 4, 10);
-    // report_performance_to_csv(p_p);
-    // ...
+
 
     // --- Cleanup ---
     free(x);

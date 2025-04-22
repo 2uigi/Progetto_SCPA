@@ -1,0 +1,14 @@
+COSA HO GIA' SVOLTO:
+- Implementazione SpMV in formato CSR (seriale e parallela con OpenMP)
+- Funzione di misura performance (tempo medio, MFLOPS, GFLOPS)
+- Salvataggio risultati in CSV
+- Applicazione dell'algoritmo RCM per riordinamento righe matrice
+- Struttura del progetto ordinata e build system con CMake
+
+COSA DEVO ANCORA FARE:
+- Ottimizzare ulteriormente l'accesso alla cache
+- Studiare il bilanciamento del carico dei thread (es: OpenMP scheduling static/dynamic/guided)
+- Aggiungere gestione degli errori più robusta
+- Effettuare profiling serio (perf, valgrind) → serve permesso con perf_event_paranoid
+- Scrivere documentazione completa nel codice e README
+- Valutare eventuali visualizzazioni dei risultati
