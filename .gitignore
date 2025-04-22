@@ -30,4 +30,5 @@ Makefile
 *.tmp
 
 # === File specifici troppo grandi (esempio, personalizzabile) ===
+# Ignora file troppo grandi che potrebbero essere specifici del tuo progetto
 /path/al/file_grande
