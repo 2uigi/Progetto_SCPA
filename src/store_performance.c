@@ -21,7 +21,7 @@ void report_performance_to_csv(performance_parameters* p_p) {
     if (dot) *dot = '\0';
 
     // Directory di destinazione
-    const char *output_dir = "/home/vboxuser/Desktop/SCPA/progetto_SCPA/performance_csv";
+    const char *output_dir = "performance_csv";
 
     // Costruisci il path completo del file CSV
     char filename[512];
@@ -45,7 +45,7 @@ void report_performance_to_csv(performance_parameters* p_p) {
     FILE *fp = fopen(filename, "a");
     if (!fp) {
         perror("Errore apertura file CSV");
-        return;
+        exit(EXIT_FAILURE);
     }
 
     // Scrivi intestazione se nuovo file

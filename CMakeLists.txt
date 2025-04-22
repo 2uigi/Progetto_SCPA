@@ -55,7 +55,6 @@ set(SRC_FILES
     src/convert_mtx_to_COO.c
     src/convert_coo_to_ellp.c
     src/convert_coo_to_ellp_columnwise.c
-    src/matrix_processing.c
     src/random_vec.c
     src/measure_performance.c
     src/store_performance.c
