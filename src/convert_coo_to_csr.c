@@ -5,6 +5,52 @@
 #include "include/mmio.h"
 #include "include/CSRMatrix.h"
 #include "include/COOMatrix.h"
+#include <limits.h>
+#include <math.h>
+
+void analyze_matrix_structure(const CSRMatrix *csr, const char *matrix_name, const char *report_path) {
+    int min_nnz = INT_MAX;
+    int max_nnz = 0;
+    double total_nnz = 0;
+    double sum_sq = 0;
+    int rows = csr->rows;
+    int cols = csr->cols;
+    int nnz_total = csr->row_ptr[rows];
+
+    for (int i = 0; i < rows; i++) {
+        int nnz = csr->row_ptr[i + 1] - csr->row_ptr[i];
+        if (nnz < min_nnz) min_nnz = nnz;
+        if (nnz > max_nnz) max_nnz = nnz;
+        total_nnz += nnz;
+        sum_sq += nnz * nnz;
+    }
+
+    double avg = total_nnz / rows;
+    double stddev = sqrt(sum_sq / rows - avg * avg);
+    double density = (double)nnz_total / (rows * cols);
+
+    FILE *report = fopen(report_path, "a");  // modalità append
+    if (!report) {
+        perror("Errore nell'apertura del file di report");
+        return;
+    }
+
+    fprintf(report,
+            "Matrice: %s\n"
+            "Dimensioni: %d x %d\n"
+            "Numero totale di NZ: %d\n"
+            "Densità: %.6f\n"
+            "NZ per riga:\n"
+            "  - min: %d\n"
+            "  - max: %d\n"
+            "  - media: %.2f\n"
+            "  - stddev: %.2f\n"
+            "----------------------------------------\n",
+            matrix_name, rows, cols, nnz_total, density,
+            min_nnz, max_nnz, avg, stddev);
+
+    fclose(report);
+}
 
 
 void print_full_matrix_from_csr(CSRMatrix *csr) {

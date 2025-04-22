@@ -36,10 +36,6 @@ performance_parameters *create_performance_parameters(const CSRMatrix *csr, cons
 }
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Uso: %s <directory_matrici>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
 
     char **file_list;
     int file_count;
@@ -54,7 +50,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < file_count; i++) {
         char full_path[PATH_MAX_LENGTH];
         snprintf(full_path, sizeof(full_path), "%s/%s", matrice_path, file_list[i]);
-        printf("\n🔧 Processando il file: %s\n", full_path);
+        printf("\nProcessando il file: %s\n", full_path);
 
         // --- Caricamento matrice in formato COO ---
         FILE *f = fopen(full_path, "r");
@@ -74,6 +70,9 @@ int main(int argc, char* argv[]) {
         CSRMatrix *csr = convert_coo_to_csr(coo);
         free(coo);
 
+        analyze_matrix_structure(csr, file_list[i], "matrix_structure_report.txt");
+
+        /*
         // --- Allocazione vettori ---
         double *x = generate_random_vector_for_csr(csr->cols);
         posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
@@ -119,7 +118,7 @@ int main(int argc, char* argv[]) {
 
         free(csr_reordered.row_ptr);
         free(csr_reordered.col_idx);
-        free(csr_reordered.values);
+        free(csr_reordered.values);*/
     }
 
     for (int i = 0; i < file_count; i++) {

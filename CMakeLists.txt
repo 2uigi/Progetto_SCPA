@@ -7,7 +7,7 @@ project(ProgettoSCPA)
 # Aggiungi un'opzione per abilitare/disabilitare AVX
 option(ENABLE_AVX "Enable AVX and AVX2 compilation" OFF)
 
-# Abilita la lingua C (aggiungi CUDA se necessario)
+# Abilita la lingua C
 enable_language(C)
 
 # Impostazioni del compilatore
@@ -34,7 +34,6 @@ if(ENABLE_AVX)
     endif()
 else()
     message(STATUS "AVX compilation disabled. Using generic compilation.")
-    # Usa -march=native per ottimizzare per la CPU attuale senza causare problemi
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -march=native")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native")
 endif()
@@ -61,11 +60,9 @@ set(SRC_FILES
     src/rcm_reordering.c
 )
 
-# Aggiungi le directory di output per oggetti e binari
+# Crea le cartelle di output se non esistono
 set(OBJ_DIR ${CMAKE_SOURCE_DIR}/src/obj)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/src/bin)
-
-# Crea le cartelle di output se non esistono
 file(MAKE_DIRECTORY ${OBJ_DIR})
 file(MAKE_DIRECTORY ${BIN_DIR})
 
@@ -77,5 +74,5 @@ set_target_properties(progetto PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )
 
-# Link OpenMP
-target_link_libraries(progetto OpenMP::OpenMP_CXX)
+# Link delle librerie necessarie
+target_link_libraries(progetto m OpenMP::OpenMP_CXX)
