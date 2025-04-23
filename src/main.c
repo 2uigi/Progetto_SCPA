@@ -35,7 +35,7 @@ performance_parameters *create_performance_parameters(const CSRMatrix *csr, cons
     return p;
 }
 
-void analyze_single_matrix(const char *file_path) {
+void analyze_single_matrix(const char *file_path, int warmup_iters, int measure_iters) {
     printf("\nAnalisi del file singolo: %s\n", file_path);
 
     FILE *f = fopen(file_path, "r");
@@ -55,7 +55,6 @@ void analyze_single_matrix(const char *file_path) {
     CSRMatrix *csr = convert_coo_to_csr(coo);
     free(coo);
 
-    double *x;
     double *x = generate_random_vector_for_csr(csr->cols);
     posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
     for (int i = 0; i < csr->cols; i++) x[i] = drand48();
@@ -69,11 +68,11 @@ void analyze_single_matrix(const char *file_path) {
     }
 
     // Warm-up
-    measure_spmv_csr_serial(csr, x, y, 10);
+    measure_spmv_csr_serial(csr, x, y, warmup_iters);
 
     // Profilazione vera e propria
-    double serial_time = measure_spmv_csr_serial(csr, x, y, 100);
-    printf("Tempo medio (seriale, 100 ripetizioni): %f sec\n", serial_time);
+    double serial_time = measure_spmv_csr_serial(csr, x, y, measure_iters);
+    printf("Tempo medio (seriale, %d ripetizioni): %f sec\n", measure_iters, serial_time);
 
     // Cleanup
     free(x);
@@ -87,7 +86,16 @@ void analyze_single_matrix(const char *file_path) {
 
 int main(int argc, char* argv[]) {
 
-    analyze_single_matrix("cavity10.mtx");
+    if (argc < 4) {
+        fprintf(stderr, "Usage: %s <matrix.mtx> <warmup_iters> <measure_iters>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    const char *file = argv[1];
+    int warmup_iters  = atoi(argv[2]);
+    int measure_iters = atoi(argv[3]);
+
+    analyze_single_matrix("matrici/cavity10.mtx", warmup_iters, measure_iters);
 
     /*char **file_list;
     int file_count;
