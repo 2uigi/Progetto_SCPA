@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
 
         analyze_matrix_structure(csr, file_list[i], "matrix_structure_report.txt");
 
-        /*
+        
         // --- Allocazione vettori ---
         double *x = generate_random_vector_for_csr(csr->cols);
         posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
         free(p_p->matrix_filename);
         free(p_p);
 
-        // --- Reordering RCM ---
+        /*// --- Reordering RCM ---
         CSRMatrix csr_reordered;
         double *x_reordered = NULL;
 
@@ -107,18 +107,19 @@ int main(int argc, char* argv[]) {
         free(p_p->matrix_filename);
         free(p_p);
 
+        */
         // --- Cleanup ---
         free(x);
-        free(x_reordered);
+        //free(x_reordered);
         free(y);
         free(csr->row_ptr);
         free(csr->col_idx);
         free(csr->values);
         free(csr);
 
-        free(csr_reordered.row_ptr);
-        free(csr_reordered.col_idx);
-        free(csr_reordered.values);*/
+        //free(csr_reordered.row_ptr);
+        //free(csr_reordered.col_idx);
+        //free(csr_reordered.values);
     }
 
     for (int i = 0; i < file_count; i++) {
