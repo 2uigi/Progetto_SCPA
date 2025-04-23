@@ -35,9 +35,61 @@ performance_parameters *create_performance_parameters(const CSRMatrix *csr, cons
     return p;
 }
 
+void analyze_single_matrix(const char *file_path) {
+    printf("\nAnalisi del file singolo: %s\n", file_path);
+
+    FILE *f = fopen(file_path, "r");
+    if (!f) {
+        fprintf(stderr, "Errore nell'aprire il file %s: %s\n", file_path, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+
+    COOMatrix *coo = read_coo_from_mtx(f);
+    fclose(f);
+
+    if (!coo) {
+        fprintf(stderr, "Errore nella lettura della matrice da %s\n", file_path);
+        exit(EXIT_FAILURE);
+    }
+
+    CSRMatrix *csr = convert_coo_to_csr(coo);
+    free(coo);
+
+    double *x;
+    double *x = generate_random_vector_for_csr(csr->cols);
+    posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
+    for (int i = 0; i < csr->cols; i++) x[i] = drand48();
+
+    double *y = malloc(sizeof(double) * csr->rows);
+    if (!y) {
+        fprintf(stderr, "Errore nell'allocazione del vettore y\n");
+        free(csr);
+        free(x);
+        exit(EXIT_FAILURE);
+    }
+
+    // Warm-up
+    measure_spmv_csr_serial(csr, x, y, 10);
+
+    // Profilazione vera e propria
+    double serial_time = measure_spmv_csr_serial(csr, x, y, 100);
+    printf("Tempo medio (seriale, 100 ripetizioni): %f sec\n", serial_time);
+
+    // Cleanup
+    free(x);
+    free(y);
+    free(csr->row_ptr);
+    free(csr->col_idx);
+    free(csr->values);
+    free(csr);
+}
+
+
 int main(int argc, char* argv[]) {
 
-    char **file_list;
+    analyze_single_matrix("cavity10.mtx");
+
+    /*char **file_list;
     int file_count;
 
     if (list_mtx_files(matrice_path, &file_list, &file_count) != 0) {
@@ -70,8 +122,7 @@ int main(int argc, char* argv[]) {
         CSRMatrix *csr = convert_coo_to_csr(coo);
         free(coo);
 
-        analyze_matrix_structure(csr, file_list[i], "matrix_structure_report.txt");
-
+        //analyze_matrix_structure(csr, file_list[i], "matrix_structure_report.txt");
         
         // --- Allocazione vettori ---
         double *x = generate_random_vector_for_csr(csr->cols);
@@ -93,7 +144,7 @@ int main(int argc, char* argv[]) {
         free(p_p->matrix_filename);
         free(p_p);
 
-        /*// --- Reordering RCM ---
+        // --- Reordering RCM ---
         CSRMatrix csr_reordered;
         double *x_reordered = NULL;
 
@@ -107,8 +158,8 @@ int main(int argc, char* argv[]) {
         free(p_p->matrix_filename);
         free(p_p);
 
-        */
-        // --- Cleanup ---
+        
+        //--- Cleanup ---
         free(x);
         //free(x_reordered);
         free(y);
@@ -125,7 +176,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < file_count; i++) {
         free(file_list[i]);
     }
-    free(file_list);
+    free(file_list);*/
 
     return EXIT_SUCCESS;
 }
