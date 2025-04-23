@@ -55,9 +55,16 @@ void analyze_single_matrix(const char *file_path, int warmup_iters, int measure_
     CSRMatrix *csr = convert_coo_to_csr(coo);
     free(coo);
 
-    double *x = generate_random_vector_for_csr(csr->cols);
-    posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
-    for (int i = 0; i < csr->cols; i++) x[i] = drand48();
+    double *x;
+    if (posix_memalign((void**)&x, 64, csr->cols * sizeof(double)) != 0) {
+        fprintf(stderr, "Allocazione allineata fallita\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Ora x è allocato e allineato: lo inizializziamo una volta sola
+    for (int i = 0; i < csr->cols; i++) {
+        x[i] = drand48();
+    }
 
     double *y = malloc(sizeof(double) * csr->rows);
     if (!y) {
