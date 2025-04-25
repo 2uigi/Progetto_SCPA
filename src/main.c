@@ -122,8 +122,8 @@ static void analyze_matrix(const char *path, int warmup, int measure, int nthrea
     free(p0);
 
     // Misura parallela
-    double t0 = benchmark_spmv_parallel(csr, x, y, warmup, measure, nthreads);
-    performance_parameters *p0 = create_perf_params(csr, path, t0, nthreads, measure);
+    t0 = benchmark_spmv_parallel(csr, x, y, warmup, measure, nthreads);
+    p0 = create_perf_params(csr, path, t0, nthreads, measure);
     printf("Parallel (%lld iters): %.6f s\n", p0->iterations, p0->avg_time_sec);
     report_performance_to_csv(p0);
     free(p0->matrix_filename);
