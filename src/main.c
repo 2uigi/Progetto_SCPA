@@ -114,12 +114,12 @@ static void analyze_matrix(const char *path, int warmup, int measure, int nthrea
     prepare_problem(path, &csr, &x, &y);
 
     // Misura seriale
-    /*double t0 = benchmark_spmv_serial(csr, x, y, warmup, measure);
+    double t0 = benchmark_spmv_serial(csr, x, y, warmup, measure);
     performance_parameters *p0 = create_perf_params(csr, path, t0, 1, measure);
-    printf("Parallel (%lld iters): %.6f s\n", p->iterations, p->avg_time_sec);
+    printf("Parallel (%lld iters): %.6f s\n", p0->iterations, p0->avg_time_sec);
     report_performance_to_csv(p0);
     free(p0->matrix_filename);
-    free(p0);*/
+    free(p0);
 
     // Misura parallela
     double t0 = benchmark_spmv_parallel(csr, x, y, warmup, measure, nthreads);
