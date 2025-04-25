@@ -12,7 +12,7 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
 # Flags di base per compilazione e linking
-set(BASE_C_FLAGS "-I${CMAKE_SOURCE_DIR}/src/include -O3 -fopenmp")
+set(BASE_C_FLAGS "-I${CMAKE_SOURCE_DIR}/src/include -O3 -fopenmp -DPREFDIST=4")
 set(BASE_CXX_FLAGS "-O3 -fopenmp -lm")
 set(BASE_LINK_FLAGS "-fopenmp")
 
