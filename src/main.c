@@ -53,7 +53,6 @@ static performance_parameters *create_perf_params(const CSRMatrix *csr, const ch
     p->NZ = csr->nnz;
     p->num_threads = threads;
     p->repetitions = reps;
-    printf("sono in performance P - > %d, %d", csr->rows, reps);
     p->iterations = (long long)csr->rows * reps;
     return p;
 }
