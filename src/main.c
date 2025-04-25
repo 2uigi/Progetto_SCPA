@@ -186,10 +186,8 @@ int main(int argc, char *argv[])
 
     char *matrix_path = argv[4];
 
-// carica la matrice da matrix_path:
-CSRMatrix *csr = load_csr_from_file(matrix_path);
 // ...
-analyze_matrix(csr, warmup, measure, nthreads);
+analyze_matrix(matrix_path, warmup, measure, nthreads);
 
     /*for (int i = 0; i < file_count; i++){
 
