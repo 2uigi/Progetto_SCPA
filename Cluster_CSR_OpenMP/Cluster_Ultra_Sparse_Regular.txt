@@ -1,0 +1,13 @@
+# Cluster 1 – Ultra-sparse, regolari
+# Criteri:
+# - μ < 10
+# - CV < 0.30
+# - ρ < 5e-5
+# Queste matrici sono caratterizzate da una struttura estremamente sparsa, regolare e uniforme.
+# Ideali per CSR semplice con scheduling statico OpenMP. Nessuna necessità di ottimizzazioni complesse.
+
+amazon0302.mtx
+thermal1.mtx
+thermomech_TK.mtx
+thermal2.mtx
+cage4.mtx

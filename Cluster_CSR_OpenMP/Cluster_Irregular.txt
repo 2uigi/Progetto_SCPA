@@ -1,0 +1,21 @@
+# Cluster 3 – Irregolari
+# Criteri:
+# - CV >= 0.30 (alta variabilità nei NZ per riga)
+# Possono contenere righe molto più dense di altre, rendendo necessario il dynamic scheduling.
+# Il formato CSR è ancora valido, ma è richiesta attenzione al bilanciamento del carico.
+
+webbase-1M.mtx
+bcsstk17.mtx
+roadNet-PA.mtx
+olm1000.mtx
+mac_econ_fwd500.mtx
+cavity10.mtx
+mcfe.mtx
+mhda416.mtx
+PR02R.mtx
+adder_dcop_32.mtx
+rdist2.mtx
+lung2.mtx
+cop20k_A.mtx
+west2021.mtx
+dc1.mtx

@@ -186,7 +186,7 @@ COOMatrix* read_coo_from_mtx(FILE *f) {
     mat->J = J;
     mat->V = V;
 
-    sort_coo_matrix(mat);  // opzionale ma consigliato
+    sort_coo_matrix(mat);  // opzionale 
 
     return mat;
 }

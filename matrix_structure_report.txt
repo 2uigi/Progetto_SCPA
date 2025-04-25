@@ -1,300 +1,300 @@
+----------------------------------------
 Matrice: webbase-1M.mtx
 Dimensioni: 1000005 x 1000005
 Numero totale di NZ: 3105536
-Densità: 0.000003
+Densità globale (ρ): 0.000003
 NZ per riga:
-  - min: 1
-  - max: 4700
-  - media: 3.11
-  - stddev: 25.35
+  - min    : 1
+  - max    : 4700
+  - media (μ): 3.1055
+  - stddev (σ): 25.3452
 ----------------------------------------
 Matrice: Cube_Coup_dt0.mtx
 Dimensioni: 2164760 x 2164760
 Numero totale di NZ: 127206144
-Densità: 0.000027
+Densità globale (ρ): 0.000027
 NZ per riga:
-  - min: 24
-  - max: 68
-  - media: 58.76
-  - stddev: 4.47
+  - min    : 24
+  - max    : 68
+  - media (μ): 58.7622
+  - stddev (σ): 4.4716
 ----------------------------------------
 Matrice: bcsstk17.mtx
 Dimensioni: 10974 x 10974
 Numero totale di NZ: 428650
-Densità: 0.003559
+Densità globale (ρ): 0.003559
 NZ per riga:
-  - min: 1
-  - max: 150
-  - media: 39.06
-  - stddev: 15.41
+  - min    : 1
+  - max    : 150
+  - media (μ): 39.0605
+  - stddev (σ): 15.4136
 ----------------------------------------
 Matrice: roadNet-PA.mtx
 Dimensioni: 1090920 x 1090920
 Numero totale di NZ: 3083796
-Densità: 0.000003
+Densità globale (ρ): 0.000003
 NZ per riga:
-  - min: 0
-  - max: 9
-  - media: 2.83
-  - stddev: 1.03
+  - min    : 0
+  - max    : 9
+  - media (μ): 2.8268
+  - stddev (σ): 1.0258
 ----------------------------------------
 Matrice: amazon0302.mtx
 Dimensioni: 262111 x 262111
 Numero totale di NZ: 1234877
-Densità: 0.000018
+Densità globale (ρ): 0.000018
 NZ per riga:
-  - min: 0
-  - max: 5
-  - media: 4.71
-  - stddev: 0.95
+  - min    : 0
+  - max    : 5
+  - media (μ): 4.7113
+  - stddev (σ): 0.9515
 ----------------------------------------
 Matrice: FEM_3D_thermal1.mtx
 Dimensioni: 17880 x 17880
 Numero totale di NZ: 430740
-Densità: 0.001347
+Densità globale (ρ): 0.001347
 NZ per riga:
-  - min: 12
-  - max: 27
-  - media: 24.09
-  - stddev: 4.31
+  - min    : 12
+  - max    : 27
+  - media (μ): 24.0906
+  - stddev (σ): 4.3088
 ----------------------------------------
 Matrice: olm1000.mtx
 Dimensioni: 1000 x 1000
 Numero totale di NZ: 3996
-Densità: 0.003996
+Densità globale (ρ): 0.003996
 NZ per riga:
-  - min: 2
-  - max: 6
-  - media: 4.00
-  - stddev: 2.00
+  - min    : 2
+  - max    : 6
+  - media (μ): 3.9960
+  - stddev (σ): 1.9980
 ----------------------------------------
 Matrice: af23560.mtx
 Dimensioni: 23560 x 23560
 Numero totale di NZ: 484256
-Densità: 0.000872
+Densità globale (ρ): 0.000872
 NZ per riga:
-  - min: 11
-  - max: 21
-  - media: 20.55
-  - stddev: 1.27
+  - min    : 11
+  - max    : 21
+  - media (μ): 20.5542
+  - stddev (σ): 1.2708
 ----------------------------------------
 Matrice: mac_econ_fwd500.mtx
 Dimensioni: 206500 x 206500
 Numero totale di NZ: 1273389
-Densità: 0.000030
+Densità globale (ρ): 0.000030
 NZ per riga:
-  - min: 1
-  - max: 44
-  - media: 6.17
-  - stddev: 4.44
+  - min    : 1
+  - max    : 44
+  - media (μ): 6.1665
+  - stddev (σ): 4.4359
 ----------------------------------------
 Matrice: ML_Laplace.mtx
 Dimensioni: 377002 x 377002
 Numero totale di NZ: 27689972
-Densità: 0.000195
+Densità globale (ρ): 0.000195
 NZ per riga:
-  - min: 26
-  - max: 74
-  - media: 73.45
-  - stddev: 3.52
+  - min    : 26
+  - max    : 74
+  - media (μ): 73.4478
+  - stddev (σ): 3.5248
 ----------------------------------------
 Matrice: olafu.mtx
 Dimensioni: 16146 x 16146
 Numero totale di NZ: 1015156
-Densità: 0.003894
+Densità globale (ρ): 0.003894
 NZ per riga:
-  - min: 24
-  - max: 89
-  - media: 62.87
-  - stddev: 12.41
+  - min    : 24
+  - max    : 89
+  - media (μ): 62.8735
+  - stddev (σ): 12.4094
 ----------------------------------------
 Matrice: raefsky2.mtx
 Dimensioni: 3242 x 3242
 Numero totale di NZ: 294276
-Densità: 0.027998
+Densità globale (ρ): 0.027998
 NZ per riga:
-  - min: 24
-  - max: 108
-  - media: 90.77
-  - stddev: 21.19
+  - min    : 24
+  - max    : 108
+  - media (μ): 90.7699
+  - stddev (σ): 21.1926
 ----------------------------------------
 Matrice: cavity10.mtx
 Dimensioni: 2597 x 2597
 Numero totale di NZ: 76367
-Densità: 0.011323
+Densità globale (ρ): 0.011323
 NZ per riga:
-  - min: 8
-  - max: 62
-  - media: 29.41
-  - stddev: 14.95
+  - min    : 8
+  - max    : 62
+  - media (μ): 29.4059
+  - stddev (σ): 14.9472
 ----------------------------------------
 Matrice: af_1_k101.mtx
 Dimensioni: 503625 x 503625
 Numero totale di NZ: 17550675
-Densità: 0.000069
+Densità globale (ρ): 0.000069
 NZ per riga:
-  - min: 15
-  - max: 35
-  - media: 34.85
-  - stddev: 1.26
+  - min    : 15
+  - max    : 35
+  - media (μ): 34.8487
+  - stddev (σ): 1.2566
 ----------------------------------------
 Matrice: mcfe.mtx
 Dimensioni: 765 x 765
 Numero totale di NZ: 24382
-Densità: 0.041663
+Densità globale (ρ): 0.041663
 NZ per riga:
-  - min: 17
-  - max: 81
-  - media: 31.87
-  - stddev: 16.91
+  - min    : 17
+  - max    : 81
+  - media (μ): 31.8719
+  - stddev (σ): 16.9113
 ----------------------------------------
 Matrice: thermal1.mtx
 Dimensioni: 82654 x 82654
 Numero totale di NZ: 574458
-Densità: 0.000084
+Densità globale (ρ): 0.000084
 NZ per riga:
-  - min: 1
-  - max: 11
-  - media: 6.95
-  - stddev: 0.88
+  - min    : 1
+  - max    : 11
+  - media (μ): 6.9502
+  - stddev (σ): 0.8768
 ----------------------------------------
 Matrice: mhda416.mtx
 Dimensioni: 416 x 416
 Numero totale di NZ: 8562
-Densità: 0.049475
+Densità globale (ρ): 0.049475
 NZ per riga:
-  - min: 1
-  - max: 33
-  - media: 20.58
-  - stddev: 6.32
+  - min    : 1
+  - max    : 33
+  - media (μ): 20.5817
+  - stddev (σ): 6.3221
 ----------------------------------------
 Matrice: PR02R.mtx
 Dimensioni: 161070 x 161070
 Numero totale di NZ: 8185136
-Densità: 0.000315
+Densità globale (ρ): 0.000315
 NZ per riga:
-  - min: 1
-  - max: 92
-  - media: 50.82
-  - stddev: 19.70
+  - min    : 1
+  - max    : 92
+  - media (μ): 50.8173
+  - stddev (σ): 19.6983
 ----------------------------------------
 Matrice: thermomech_TK.mtx
 Dimensioni: 102158 x 102158
 Numero totale di NZ: 711558
-Densità: 0.000068
+Densità globale (ρ): 0.000068
 NZ per riga:
-  - min: 4
-  - max: 10
-  - media: 6.97
-  - stddev: 0.72
+  - min    : 4
+  - max    : 10
+  - media (μ): 6.9653
+  - stddev (σ): 0.7152
 ----------------------------------------
 Matrice: adder_dcop_32.mtx
 Dimensioni: 1813 x 1813
 Numero totale di NZ: 11246
-Densità: 0.003421
+Densità globale (ρ): 0.003421
 NZ per riga:
-  - min: 1
-  - max: 1310
-  - media: 6.20
-  - stddev: 30.78
+  - min    : 1
+  - max    : 1310
+  - media (μ): 6.2030
+  - stddev (σ): 30.7771
 ----------------------------------------
 Matrice: rdist2.mtx
 Dimensioni: 3198 x 3198
 Numero totale di NZ: 56934
-Densità: 0.005567
+Densità globale (ρ): 0.005567
 NZ per riga:
-  - min: 1
-  - max: 61
-  - media: 17.80
-  - stddev: 13.76
+  - min    : 1
+  - max    : 61
+  - media (μ): 17.8030
+  - stddev (σ): 13.7562
 ----------------------------------------
 Matrice: lung2.mtx
 Dimensioni: 109460 x 109460
 Numero totale di NZ: 492564
-Densità: 0.000041
+Densità globale (ρ): 0.000041
 NZ per riga:
-  - min: 2
-  - max: 8
-  - media: 4.50
-  - stddev: 1.94
+  - min    : 2
+  - max    : 8
+  - media (μ): 4.4999
+  - stddev (σ): 1.9391
 ----------------------------------------
 Matrice: cop20k_A.mtx
 Dimensioni: 121192 x 121192
 Numero totale di NZ: 2624331
-Densità: 0.000179
+Densità globale (ρ): 0.000179
 NZ per riga:
-  - min: 0
-  - max: 81
-  - media: 21.65
-  - stddev: 13.79
+  - min    : 0
+  - max    : 81
+  - media (μ): 21.6543
+  - stddev (σ): 13.7927
 ----------------------------------------
 Matrice: mhd4800a.mtx
 Dimensioni: 4800 x 4800
 Numero totale di NZ: 102252
-Densità: 0.004438
+Densità globale (ρ): 0.004438
 NZ per riga:
-  - min: 1
-  - max: 33
-  - media: 21.30
-  - stddev: 5.80
+  - min    : 1
+  - max    : 33
+  - media (μ): 21.3025
+  - stddev (σ): 5.7995
 ----------------------------------------
 Matrice: nlpkkt80.mtx
 Dimensioni: 1062400 x 1062400
 Numero totale di NZ: 28704672
-Densità: 0.000025
+Densità globale (ρ): 0.000025
 NZ per riga:
-  - min: 5
-  - max: 28
-  - media: 27.02
-  - stddev: 3.74
+  - min    : 5
+  - max    : 28
+  - media (μ): 27.0187
+  - stddev (σ): 3.7351
 ----------------------------------------
 Matrice: cant.mtx
 Dimensioni: 62451 x 62451
 Numero totale di NZ: 4007383
-Densità: 0.001028
+Densità globale (ρ): 0.001028
 NZ per riga:
-  - min: 1
-  - max: 78
-  - media: 64.17
-  - stddev: 14.06
+  - min    : 1
+  - max    : 78
+  - media (μ): 64.1684
+  - stddev (σ): 14.0563
 ----------------------------------------
 Matrice: west2021.mtx
 Dimensioni: 2021 x 2021
 Numero totale di NZ: 7353
-Densità: 0.001800
+Densità globale (ρ): 0.001800
 NZ per riga:
-  - min: 1
-  - max: 12
-  - media: 3.64
-  - stddev: 2.39
+  - min    : 1
+  - max    : 12
+  - media (μ): 3.6383
+  - stddev (σ): 2.3894
 ----------------------------------------
 Matrice: dc1.mtx
 Dimensioni: 116835 x 116835
 Numero totale di NZ: 766396
-Densità: 0.000056
+Densità globale (ρ): 0.000056
 NZ per riga:
-  - min: 1
-  - max: 114190
-  - media: 6.56
-  - stddev: -nan
+  - min    : 1
+  - max    : 114190
+  - media (μ): 6.5596
+  - stddev (σ): 361.4981
 ----------------------------------------
 Matrice: thermal2.mtx
 Dimensioni: 1228045 x 1228045
 Numero totale di NZ: 8580313
-Densità: 0.000006
+Densità globale (ρ): 0.000006
 NZ per riga:
-  - min: 1
-  - max: 11
-  - media: 6.99
-  - stddev: 0.81
+  - min    : 1
+  - max    : 11
+  - media (μ): 6.9870
+  - stddev (σ): 0.8114
 ----------------------------------------
 Matrice: cage4.mtx
 Dimensioni: 9 x 9
 Numero totale di NZ: 49
-Densità: 0.604938
+Densità globale (ρ): 0.604938
 NZ per riga:
-  - min: 5
-  - max: 6
-  - media: 5.44
-  - stddev: 0.50
-----------------------------------------
+  - min    : 5
+  - max    : 6
+  - media (μ): 5.4444
+  - stddev (σ): 0.4969

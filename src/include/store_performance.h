@@ -7,6 +7,7 @@ typedef struct {
     int repetitions;
     int num_threads;
     const char* matrix_filename;
+    long long iterations;
 }performance_parameters;
 
 void report_performance_to_csv(performance_parameters*);

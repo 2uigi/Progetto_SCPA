@@ -2,40 +2,43 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Nome del progetto
-project(ProgettoSCPA)
+project(ProgettoSCPA LANGUAGES C CXX)
 
-# Aggiungi un'opzione per abilitare/disabilitare AVX
+# Opzione per abilitare/disabilitare AVX
 option(ENABLE_AVX "Enable AVX and AVX2 compilation" OFF)
 
-# Abilita la lingua C
-enable_language(C)
-
-# Impostazioni del compilatore
+# Compilatori
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
-# Flags di compilazione
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I${CMAKE_SOURCE_DIR}/src/include -O3 -fopenmp")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fopenmp -lm")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp")
+# Flags di base per compilazione e linking
+set(BASE_C_FLAGS "-I${CMAKE_SOURCE_DIR}/src/include -O3 -fopenmp")
+set(BASE_CXX_FLAGS "-O3 -fopenmp -lm")
+set(BASE_LINK_FLAGS "-fopenmp")
 
-# Se ENABLE_AVX è abilitato, aggiungi i flag AVX
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BASE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASE_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${BASE_LINK_FLAGS}")
+
+# Se ENABLE_AVX è abilitato, aggiungi i flag AVX o microarchitettura specifica
 if(ENABLE_AVX)
     if(AVX512_SUPPORTED)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mavx512f")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx512f")
-        message(STATUS "Compiling with AVX512F support.")
+        # Usa -march=skylake-avx512 e fast-math su CPU compatibili
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=skylake-avx512 -ffast-math")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=skylake-avx512 -ffast-math")
+        message(STATUS "Compiling with Skylake AVX-512 and fast-math support.")
     elseif(AVX2_SUPPORTED)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mavx2")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2")
-        message(STATUS "Compiling with AVX2 support.")
+        # Mantieni supporto AVX2 generico
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mavx2 -ffast-math")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -ffast-math")
+        message(STATUS "Compiling with AVX2 and fast-math support.")
     else()
-        message(STATUS "AVX is not supported on this system. Not enabling AVX compilation.")
+        message(STATUS "AVX non supportato su questo sistema. Non abilito compilazione AVX.")
     endif()
 else()
     message(STATUS "AVX compilation disabled. Using generic compilation.")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -march=native")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif()
 
 # Abilita OpenMP
@@ -58,21 +61,25 @@ set(SRC_FILES
     src/measure_performance.c
     src/store_performance.c
     src/rcm_reordering.c
+    src/spmv_csr_serial.c
+    src/spmv_csr_static.c
+    src/matrix_analysis.c
 )
 
-# Crea le cartelle di output se non esistono
+# Creazione delle cartelle di output
 set(OBJ_DIR ${CMAKE_SOURCE_DIR}/src/obj)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/src/bin)
 file(MAKE_DIRECTORY ${OBJ_DIR})
 file(MAKE_DIRECTORY ${BIN_DIR})
 
-# Crea il target eseguibile
+# Target eseguibile
 add_executable(progetto ${SRC_FILES})
 
-# Imposta il percorso di output per l'eseguibile
+# Imposta output directory
 set_target_properties(progetto PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )
 
 # Link delle librerie necessarie
 target_link_libraries(progetto m OpenMP::OpenMP_CXX)
+

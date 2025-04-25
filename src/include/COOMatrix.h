@@ -1,6 +1,7 @@
 #ifndef COO_MATRIX_H
 #define COO_MATRIX_H
 
+#include <stdio.h>
 
 typedef struct {
     int rows;

@@ -1,0 +1,12 @@
+# Cluster 2 – Medio-sparse, regolari
+# Criteri:
+# - 10 <= μ < 40
+# - CV < 0.30
+# Buona regolarità nella distribuzione dei non zeri, con densità medio-bassa.
+# Ottime candidate per CSR con parallelizzazione OpenMP e scheduling dinamico leggero.
+
+FEM_3D_thermal1.mtx
+af23560.mtx
+af_1_k101.mtx
+mhd4800a.mtx
+nlpkkt80.mtx

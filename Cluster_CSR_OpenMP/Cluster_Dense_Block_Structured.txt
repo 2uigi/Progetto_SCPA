@@ -1,0 +1,11 @@
+# Cluster 4 – Dense o strutturate a blocchi
+# Criteri:
+# - μ >= 40 oppure μ >= 35 e CV < 0.10
+# Matrici dense o con pattern di blocchi regolari.
+# Potrebbero trarre beneficio dall'uso del formato BCSR o da tecniche di blocco specifiche.
+
+Cube_Coup_dt0.mtx
+ML_Laplace.mtx
+olafu.mtx
+raefsky2.mtx
+cant.mtx

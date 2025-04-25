@@ -1,85 +1,133 @@
-#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <string.h>
-#include "include/file_utils.h"
-#include "include/read_mtx.h"
-#include "include/CSRMatrix.h"
-#include "include/COOMatrix.h"
-#include "include/random_vec.h"
-#include "include/measure_performance.h"
-#include "include/store_performance.h"
-#include "include/RCM_Reorder.h"
+#include <errno.h>
+#include <omp.h>
 
-#ifndef PATH_MAX_LENGTH
-#define PATH_MAX_LENGTH 4096
+#include "file_utils.h"
+#include "read_mtx.h"
+#include "CSRMatrix.h"
+#include "COOMatrix.h"
+#include "random_vec.h"
+#include "measure_performance.h"
+#include "store_performance.h"
+#include "RCM_Reorder.h"
+#include "include/matrix_analysis.h"
+
+#ifndef PATH_MAX
+#define PATH_MAX 4096
 #endif
 
-const char matrice_path[] = "matrici";    // directory con i .mtx 
+#define PATH_MAX_LENGTH 4096
 
-// Factory per creare e inizializzare performance_parameters
-performance_parameters *create_performance_parameters(const CSRMatrix *csr, const char *file_path, double avg_time, int threads, int repetitions) {
-    performance_parameters *p = malloc(sizeof(performance_parameters));
-    if (!p) {
-        fprintf(stderr, "Errore allocazione performance_parameters\n");
-        exit(EXIT_FAILURE);
+// Macro per gestire errori di sistema con messaggi e exit
+#define DIE(msg)                                           \
+    do                                                     \
+    {                                                      \
+        fprintf(stderr, "%s: %s\n", msg, strerror(errno)); \
+        exit(EXIT_FAILURE);                                \
+    } while (0)
+
+// Alloca memoria allineata o termina il programma
+static void *alloc_aligned(size_t alignment, size_t size)
+{
+    void *ptr = NULL;
+    if (posix_memalign(&ptr, alignment, size) != 0)
+    {
+        DIE("Aligned allocation failed");
     }
+    return ptr;
+}
 
+// Crea e inizializza performance_parameters
+static performance_parameters *create_perf_params(const CSRMatrix *csr, const char *path,
+                                                  double avg_time, int threads, int reps)
+{
+    performance_parameters *p = malloc(sizeof(*p));
+    if (!p)
+    {
+        DIE("Failed to allocate performance_parameters");
+    }
     p->avg_time_sec = avg_time;
-    p->matrix_filename = get_filename_from_path(file_path); // Assicurati che faccia strdup()
+    p->matrix_filename = strdup(get_filename_from_path(path));
     p->NZ = csr->nnz;
     p->num_threads = threads;
-    p->repetitions = repetitions;
-
+    p->repetitions = reps;
+    printf("sono in performance P - > %d, %d", csr->rows, reps);
+    p->iterations = (long long)csr->rows * reps;
     return p;
 }
 
-void analyze_single_matrix(const char *file_path, int warmup_iters, int measure_iters) {
-    printf("\nAnalisi del file singolo: %s\n", file_path);
-
-    FILE *f = fopen(file_path, "r");
-    if (!f) {
-        fprintf(stderr, "Errore nell'aprire il file %s: %s\n", file_path, strerror(errno));
-        exit(EXIT_FAILURE);
-    }
+// Prepara il problema: legge il file, trasforma coo->csr, alloca x e y
+static void prepare_problem(const char *mtx_file, CSRMatrix **out_csr,
+                            double **out_x, double **out_y)
+{
+    FILE *f = fopen(mtx_file, "r");
+    if (!f)
+        DIE("Failed to open matrix file");
 
     COOMatrix *coo = read_coo_from_mtx(f);
     fclose(f);
-
-    if (!coo) {
-        fprintf(stderr, "Errore nella lettura della matrice da %s\n", file_path);
-        exit(EXIT_FAILURE);
-    }
+    if (!coo)
+        DIE("Failed to read COO matrix");
 
     CSRMatrix *csr = convert_coo_to_csr(coo);
     free(coo);
 
-    double *x;
-    if (posix_memalign((void**)&x, 64, csr->cols * sizeof(double)) != 0) {
-        fprintf(stderr, "Allocazione allineata fallita\n");
-        exit(EXIT_FAILURE);
-    }
-
-    // Ora x è allocato e allineato: lo inizializziamo una volta sola
-    for (int i = 0; i < csr->cols; i++) {
+    double *x = alloc_aligned(64, csr->cols * sizeof *x);
+    for (int i = 0; i < csr->cols; ++i)
+    {
         x[i] = drand48();
     }
 
-    double *y = malloc(sizeof(double) * csr->rows);
-    if (!y) {
-        fprintf(stderr, "Errore nell'allocazione del vettore y\n");
-        free(csr);
-        free(x);
-        exit(EXIT_FAILURE);
-    }
+    double *y = malloc(csr->rows * sizeof *y);
+    if (!y)
+        DIE("Failed to allocate output vector y");
 
-    // Warm-up
-    measure_spmv_csr_serial(csr, x, y, warmup_iters);
+    *out_csr = csr;
+    *out_x = x;
+    *out_y = y;
+}
 
-    // Profilazione vera e propria
-    double serial_time = measure_spmv_csr_serial(csr, x, y, measure_iters);
-    printf("Tempo medio (seriale, %d ripetizioni): %f sec\n", measure_iters, serial_time);
+// Esegue warm-up e misura SpMV CSR in seriale
+static double benchmark_spmv_serial(const CSRMatrix *csr, const double *x, double *y,
+                             int warmup_iters, int measure_iters)
+{
+    measure_spmv_csr_serial((CSRMatrix *)csr, (double *)x, y, warmup_iters);
+    return measure_spmv_csr_serial((CSRMatrix *)csr, (double *)x, y, measure_iters);
+}
+
+// Esegue warm-up e misura SpMV CSR in seriale
+static double benchmark_spmv_parallel(const CSRMatrix *csr, const double *x, double *y,
+    int warmup_iters, int measure_iters, int nthreads)
+{
+measure_spmv_csr_parallel((CSRMatrix *)csr, (double *)x, y, warmup_iters, nthreads);
+return measure_spmv_csr_parallel((CSRMatrix *)csr, (double *)x, y, measure_iters, nthreads);
+}
+
+// Analizza matrice: baseline seriale, poi con RCM
+static void analyze_matrix(const char *path, int warmup, int measure, int nthreads){
+    CSRMatrix *csr;
+    double *x, *y;
+
+    printf("\nProcessing: %s\n", path);
+    prepare_problem(path, &csr, &x, &y);
+
+    // Misura seriale
+    /*double t0 = benchmark_spmv_serial(csr, x, y, warmup, measure);
+    performance_parameters *p0 = create_perf_params(csr, path, t0, 1, measure);
+    printf("Parallel (%lld iters): %.6f s\n", p->iterations, p->avg_time_sec);
+    report_performance_to_csv(p0);
+    free(p0->matrix_filename);
+    free(p0);*/
+
+    // Misura parallela
+    double t0 = benchmark_spmv_parallel(csr, x, y, warmup, measure, nthreads);
+    performance_parameters *p0 = create_perf_params(csr, path, t0, nthreads, measure);
+    printf("Parallel (%lld iters): %.6f s\n", p0->iterations, p0->avg_time_sec);
+    report_performance_to_csv(p0);
+    free(p0->matrix_filename);
+    free(p0);
 
     // Cleanup
     free(x);
@@ -90,109 +138,70 @@ void analyze_single_matrix(const char *file_path, int warmup_iters, int measure_
     free(csr);
 }
 
-
-int main(int argc, char* argv[]) {
-
-    if (argc < 4) {
-        fprintf(stderr, "Usage: %s <matrix.mtx> <warmup_iters> <measure_iters>\n", argv[0]);
+int main(int argc, char *argv[])
+{     
+    char **file_list;
+        if (argc < 4) {
+        fprintf(stderr, "Usage: %s <warmup> <measure> <nthreads>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    const char *file = argv[1];
-    int warmup_iters  = atoi(argv[2]);
-    int measure_iters = atoi(argv[3]);
+    char *endptr;
 
-    analyze_single_matrix("matrici/cavity10.mtx", warmup_iters, measure_iters);
+    // Conversione di argv[1] in int warmup
+    long temp = strtol(argv[1], &endptr, 10);
+    if (*endptr != '\0') {
+        fprintf(stderr, "Invalid warmup value: %s\n", argv[1]);
+        return EXIT_FAILURE;
+    }
+    int warmup = (int)temp;
 
-    /*char **file_list;
+    // Conversione di argv[2] in int measure
+    temp = strtol(argv[2], &endptr, 10);
+    if (*endptr != '\0') {
+        fprintf(stderr, "Invalid measure value: %s\n", argv[2]);
+        return EXIT_FAILURE;
+    }
+    int measure = (int)temp;
+
+    // Conversione di argv[3] in int nthreads
+    temp = strtol(argv[3], &endptr, 10);
+    if (*endptr != '\0') {
+        fprintf(stderr, "Invalid nthreads value: %s\n", argv[3]);
+        return EXIT_FAILURE;
+    }
+    int nthreads = (int)temp;
+
+    printf("warmup=%d, measure=%d, nthreads=%d\n", warmup, measure, nthreads);
+
+    char* matrice_path = "matrici_cluster_Ultra_Sparse_Regular";
     int file_count;
 
-    if (list_mtx_files(matrice_path, &file_list, &file_count) != 0) {
+    if (list_mtx_files(matrice_path, &file_list, &file_count) != 0){
+
         fprintf(stderr, "Errore: %s\n", strerror(errno));
         return EXIT_FAILURE;
     }
 
     printf("Trovati %d file .mtx:\n", file_count);
 
-    for (int i = 0; i < file_count; i++) {
+    for (int i = 0; i < file_count; i++){
+
         char full_path[PATH_MAX_LENGTH];
+
         snprintf(full_path, sizeof(full_path), "%s/%s", matrice_path, file_list[i]);
+
         printf("\nProcessando il file: %s\n", full_path);
 
-        // --- Caricamento matrice in formato COO ---
-        FILE *f = fopen(full_path, "r");
-        if (!f) {
-            fprintf(stderr, "Errore nell'aprire il file %s: %s\n", full_path, strerror(errno));
-            continue;
-        }
-
-        COOMatrix *coo = read_coo_from_mtx(f);
-        fclose(f);
-
-        if (!coo) {
-            fprintf(stderr, "Errore nella lettura della matrice da %s\n", full_path);
-            continue;
-        }
-
-        CSRMatrix *csr = convert_coo_to_csr(coo);
-        free(coo);
-
-        //analyze_matrix_structure(csr, file_list[i], "matrix_structure_report.txt");
-        
-        // --- Allocazione vettori ---
-        double *x = generate_random_vector_for_csr(csr->cols);
-        posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
-        double *y = malloc(sizeof(double) * csr->rows);
-        if (!y) {
-            fprintf(stderr, "Errore nell'allocazione del vettore y\n");
-            free(csr);
-            continue;
-        }
-
-        // --- Warm-up ---
-        measure_spmv_csr_serial(csr, x, y, 10);
-
-        // --- Misurazione performance seriale ---
-        double serial_time = measure_spmv_csr_serial(csr, x, y, 100);
-        performance_parameters *p_p = create_performance_parameters(csr, full_path, serial_time, 1, 100);
-        report_performance_to_csv(p_p);
-        free(p_p->matrix_filename);
-        free(p_p);
-
-        // --- Reordering RCM ---
-        CSRMatrix csr_reordered;
-        double *x_reordered = NULL;
-
-        apply_rcm_to_csr(csr, x, &csr_reordered, &x_reordered);
-        posix_memalign((void**)&x, 64, csr->cols * sizeof(double));
-
-        // --- Misurazione performance seriale con reordering ---
-        double reordered_time = measure_spmv_csr_serial(&csr_reordered, x_reordered, y, 100);
-        p_p = create_performance_parameters(csr, full_path, reordered_time, 1, 100);
-        report_performance_to_csv(p_p);
-        free(p_p->matrix_filename);
-        free(p_p);
-
-        
-        //--- Cleanup ---
-        free(x);
-        //free(x_reordered);
-        free(y);
-        free(csr->row_ptr);
-        free(csr->col_idx);
-        free(csr->values);
-        free(csr);
-
-        //free(csr_reordered.row_ptr);
-        //free(csr_reordered.col_idx);
-        //free(csr_reordered.values);
+        analyze_matrix(full_path, warmup, measure, nthreads);
     }
 
-    for (int i = 0; i < file_count; i++) {
+    //free delle liste
+    for (int i = 0; i < file_count; i++)
+    {
         free(file_list[i]);
     }
-    free(file_list);*/
-
-    return EXIT_SUCCESS;
+    free(file_list);
+        return EXIT_SUCCESS;
+    
 }
-
