@@ -2,6 +2,10 @@
 build/
 matrici/
 matrici_test/
+"performance_csv/*.csv"
+# Includi eccezione per le matrici ultra sparse
+!matrici_cluster_Ultra_Sparse_Regular/
+!matrici_cluster_Ultra_Sparse_Regular/*.mtx
 
 # === File di input/output e matrici ===
 *.mtx
