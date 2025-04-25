@@ -17,7 +17,7 @@ mkdir -p "$OUTDIR"
 run_perf () {
     local t=$1
     local matrix=$2
-    local csv="$OUTDIR/$(basename "$matrix" .mtx)_${t}th.csv"
+    local csv="$OUTDIR/$(basename "$matrix" .mtx)_PREFDIST=2_${t}th.csv"
 
     export OMP_NUM_THREADS=$t
     export OMP_PLACES=cores

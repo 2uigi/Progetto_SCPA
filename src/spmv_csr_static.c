@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #ifndef PREFDIST
-#define PREFDIST 4         /* distanza di prefetch sui vettori   */
+#define PREFDIST 2         /* distanza di prefetch sui vettori   */
 #endif
 
 /*---------- kernel CSR + OpenMP static ------------------------------------*/
