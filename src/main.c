@@ -184,6 +184,13 @@ int main(int argc, char *argv[])
 
     printf("Trovati %d file .mtx:\n", file_count);
 
+    char *matrix_path = argv[4];
+
+// carica la matrice da matrix_path:
+CSRMatrix *csr = load_csr_from_file(matrix_path);
+// ...
+analyze_matrix(csr, warmup, measure, nthreads);
+
     /*for (int i = 0; i < file_count; i++){
 
         char full_path[PATH_MAX_LENGTH];
@@ -191,9 +198,9 @@ int main(int argc, char *argv[])
         snprintf(full_path, sizeof(full_path), "%s/%s", matrice_path, file_list[i]);
 
         printf("\nProcessando il file: %s\n", full_path);
-*/
+
         analyze_matrix("/matrici_cluster_Ultra_Sparse_Regular/thermal2.mtx", warmup, measure, nthreads);
-    //}
+    }
 
     //free delle liste
     /*for (int i = 0; i < file_count; i++)
