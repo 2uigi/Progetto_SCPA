@@ -1,0 +1,8 @@
+Cluster 3 (C3) – Matrici sparse e sbilanciate: Alta deviazione standard, distribuzione irregolare. Strategia consigliata: OpenMP dynamic scheduling con chunk piccolo.
+
+Matrici:
+- webbase-1M
+- dc1
+- cop20k_A
+- adder_dcop_32
+- rdist2

@@ -90,18 +90,20 @@ static void prepare_problem(const char *mtx_file, CSRMatrix **out_csr,
 
 // Esegue warm-up e misura SpMV CSR in seriale
 static double benchmark_spmv_serial(const CSRMatrix *csr, const double *x, double *y,
-                             int warmup_iters, int measure_iters)
-{
+                             int warmup_iters, int measure_iters){
+
     measure_spmv_csr_serial((CSRMatrix *)csr, (double *)x, y, warmup_iters);
     return measure_spmv_csr_serial((CSRMatrix *)csr, (double *)x, y, measure_iters);
+
 }
 
 // Esegue warm-up e misura SpMV CSR in seriale
 static double benchmark_spmv_parallel(const CSRMatrix *csr, const double *x, double *y,
-    int warmup_iters, int measure_iters, int nthreads)
-{
-measure_spmv_csr_parallel((CSRMatrix *)csr, (double *)x, y, warmup_iters, nthreads);
-return measure_spmv_csr_parallel((CSRMatrix *)csr, (double *)x, y, measure_iters, nthreads);
+    int warmup_iters, int measure_iters, int nthreads){
+
+    measure_spmv_csr_parallel((CSRMatrix *)csr, (double *)x, y, warmup_iters, nthreads);
+    return measure_spmv_csr_parallel((CSRMatrix *)csr, (double *)x, y, measure_iters, nthreads);
+
 }
 
 // Analizza matrice: baseline seriale, poi con RCM
@@ -115,18 +117,16 @@ static void analyze_matrix(const char *path, int warmup, int measure, int nthrea
     // Misura seriale
     double t0 = benchmark_spmv_serial(csr, x, y, warmup, measure);
     performance_parameters *p0 = create_perf_params(csr, path, t0, 1, measure);
-    printf("Parallel (%lld iters): %.6f s\n", p0->iterations, p0->avg_time_sec);
     report_performance_to_csv(p0);
     free(p0->matrix_filename);
     free(p0);
 
     // Misura parallela
-    t0 = benchmark_spmv_parallel(csr, x, y, warmup, measure, nthreads);
+    /*t0 = benchmark_spmv_parallel(csr, x, y, warmup, measure, nthreads);
     p0 = create_perf_params(csr, path, t0, nthreads, measure);
-    printf("Parallel (%lld iters): %.6f s\n", p0->iterations, p0->avg_time_sec);
     report_performance_to_csv(p0);
     free(p0->matrix_filename);
-    free(p0);
+    free(p0);*/
 
     // Cleanup
     free(x);
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 {     
     char **file_list;
         if (argc < 4) {
-        fprintf(stderr, "Usage: %s <warmup> <measure> <nthreads>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <warmup> <measure> <nthreads> <matrix_path>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -171,9 +171,13 @@ int main(int argc, char *argv[])
     }
     int nthreads = (int)temp;
 
-    printf("warmup=%d, measure=%d, nthreads=%d\n", warmup, measure, nthreads);
+    char *matrix_path = argv[4];
 
-    char* matrice_path = "matrici_cluster_Ultra_Sparse_Regular";
+    printf("warmup=%d, measure=%d, nthreads=%d matrix_path=%s\n", warmup, measure, nthreads, matrix_path);
+
+    analyze_matrix(matrix_path, warmup, measure, nthreads);
+
+    /*    char* matrice_path = "matrici_cluster_Ultra_Sparse_Regular";
     int file_count;
 
     if (list_mtx_files(matrice_path, &file_list, &file_count) != 0){
@@ -183,13 +187,11 @@ int main(int argc, char *argv[])
     }
 
     printf("Trovati %d file .mtx:\n", file_count);
-
-    char *matrix_path = argv[4];
-
-// ...
-analyze_matrix(matrix_path, warmup, measure, nthreads);
-
-    /*for (int i = 0; i < file_count; i++){
+    
+    
+    
+    
+    for (int i = 0; i < file_count; i++){
 
         char full_path[PATH_MAX_LENGTH];
 

@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #ifndef PREFDIST
-#define PREFDIST 2         /* distanza di prefetch sui vettori   */
+#define PREFDIST 4         /* distanza di prefetch sui vettori   */
 #endif
 
 /*---------- kernel CSR + OpenMP static ------------------------------------*/
@@ -19,13 +19,13 @@ int32_t start = A->row_ptr[i], end = A->row_ptr[i+1];
 
 #pragma omp simd reduction(+:sum)
 for (int32_t p = start; p < end; ++p) {
-#if PREFDIST>0
-if (p + PREFDIST < end)
-__builtin_prefetch(&x[A->col_idx[p+PREFDIST]], 0, 1);
-#endif
-sum += A->values[p] * x[A->col_idx[p]];
+    #if PREFDIST>0
+    if (p + PREFDIST < end)
+        __builtin_prefetch(&x[A->col_idx[p+PREFDIST]], 0, 1);
+    #endif
+    sum += A->values[p] * x[A->col_idx[p]];
 }
-y[i] = sum;
-}
+    y[i] = sum;
+    }
 }
 
