@@ -11,7 +11,6 @@
 #include "random_vec.h"
 #include "measure_performance.h"
 #include "store_performance.h"
-#include "RCM_Reorder.h"
 #include "include/matrix_analysis.h"
 
 #ifndef PATH_MAX
