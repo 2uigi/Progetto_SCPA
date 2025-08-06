@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <omp.h>
-#include "include/CSRMatrix.h"
-#include "include/spmv_kernels.h"
+#include "SRMatrix.h"
+#include "spmv_kernels.h"
 
 /*-------------------------------------------------------------
  *  Small helper: difference between two timespec in seconds

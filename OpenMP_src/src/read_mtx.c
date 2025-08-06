@@ -6,9 +6,9 @@
 #include <limits.h>   // per PATH_MAX
 #include <error.h>
 #include <errno.h>
-#include "include/mmio.h"
-#include "include/file_utils.h"
-#include "include/read_mtx.h"
+#include "mmio.h"
+#include "file_utils.h"
+#include "read_mtx.h"
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "include/mmio.h"
-#include "include/COOMatrix.h"
-#include "include/ELLPACKMatrix.h"
+#include "mmio.h"
+#include "COOMatrix.h"
+#include "ELLPACKMatrix.h"
 
 void print_ellpack_matrix(ELLPACKMatrix *ellp) {
     printf("ELLPACK Matrix:\n");

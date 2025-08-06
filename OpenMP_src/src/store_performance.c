@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "include/store_performance.h"
+#include "store_performance.h"
 
 void report_performance_to_csv(performance_parameters* p_p) {
     // Estrai nome base

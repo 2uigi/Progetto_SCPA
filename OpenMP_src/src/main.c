@@ -11,7 +11,7 @@
 #include "random_vec.h"
 #include "measure_performance.h"
 #include "store_performance.h"
-#include "include/matrix_analysis.h"
+#include "matrix_analysis.h"
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096

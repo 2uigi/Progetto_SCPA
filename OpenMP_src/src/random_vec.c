@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "include/random_vec.h"
+#include "random_vec.h"
 
 void print_vector(double* vec, int size) {
     for (int i = 0; i < size; ++i) {

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "include/mmio.h"
-#include "include/CSRMatrix.h"
-#include "include/COOMatrix.h"
+#include "mmio.h"
+#include "CSRMatrix.h"
+#include "COOMatrix.h"
 #include <limits.h>
 #include <math.h>
 #include <stdint.h>

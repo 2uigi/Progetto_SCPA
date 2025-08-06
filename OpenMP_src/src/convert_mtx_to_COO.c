@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "include/COOMatrix.h"
-#include "include/mmio.h"  
+#include "COOMatrix.h"
+#include "mmio.h"  
 
 void print_coo_matrix(COOMatrix *coo) {
     if (coo == NULL) {
